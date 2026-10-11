@@ -1,0 +1,13 @@
+# Một giai đoạn giữ cả Node.js, mã nguồn và phụ thuộc xây dựng.
+FROM node:18
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY build.cjs server.cjs ./
+COPY src ./src
+COPY public ./public
+RUN npm run build
+
+ENV NODE_ENV=production
+EXPOSE 3000
+CMD ["node", "server.cjs"]
